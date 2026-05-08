@@ -1,15 +1,19 @@
 let numTotalPokemon = 0;
 
+
 /* ELEMENTOS HTML */
 const lista = document.querySelector("#lista-pokemon");
 const form = document.querySelector("#form-pesquisa");
 const pesquisa = document.querySelector("#pesquisa");
 const restante = document.querySelector("#restante");
+const informacao = document.querySelector("#informacao")
 
 /* FUNÇÕES */
 function renderizarRestante(length) {
-    restante.textContent = "Foram encontrados " + length + " de " + numTotalPokemon + " pokemons!"
+    restante.textContent = "Foram encontrados " + length + " de" + numTotalPokemon + " pokemons!"
 }
+
+
 
 function createPokemonCard(pokemon) {
     const li = document.createElement("li")
@@ -43,10 +47,48 @@ function createPokemonCard(pokemon) {
 
     ctnNome.textContent = pokemon?.nome || "Desconhecido"
 
+    const ctnTipos = document.createElement("div")
+    ctnTipos.setAttribute("class", "ctn-tipos")
+
+
+    if (pokemon?.tipos) {
+        const ulCtnTipos = document.createElement("ul")
+        ulCtnTipos.setAttribute("class", "lista-tipos")
+
+        for (const tipo of pokemon.tipos) {
+            const liTipo = document.createElement("li")
+
+            const imgTipo = document.createElement("img")
+
+            fetch(tipo.url)
+                .then(res => res.json())
+                .then(dta => {
+                    const iconUrl = dta.sprites["generation-ix"]["scarlet-violet"]["name_icon"]
+                    imgTipo.setAttribute("src", iconUrl);
+                })
+                .catch(err => console.error("Erro ao carregar tipo:", err));
+
+            imgTipo.setAttribute("height", "13px")
+            imgTipo.setAttribute("alt", tipo.name)
+
+            liTipo.appendChild(imgTipo)
+
+            ulCtnTipos.appendChild(liTipo)
+        }
+        ctnTipos.appendChild(ulCtnTipos)
+    }
+
+
     card.appendChild(ctnNumero)
     card.appendChild(ctnNome)
+    card.appendChild(ctnTipos)
 
     li.appendChild(card)
+    li.addEventListener("click", () => {
+        const display = informacao.style.display || "none"; 
+        informacao.setAttribute("style", "display: ".concat(display === "none" ? "block" : "none"))
+
+    })
     return li
 }
 
@@ -74,6 +116,10 @@ function renderizarLista() {
     renderizarRestante(pokedex.length)
 }
 
+function abrirInfo(){
+    informacao.setAttribute("style", )
+}
+
 fetch("https://pokeapi.co/api/v2/pokemon/")
     .then(async res => await res.json())
     .then(data => { numTotalPokemon = data.count })
@@ -96,6 +142,7 @@ form.addEventListener("submit", async e => {
     const numero = pokemon.id
     const foto = pokemon.sprites.front_default
     const nome = pokemon.name
+    const tipos = pokemon.types.map(({ type }) => type) // {url e name}
 
     const pokedex = JSON.parse(localStorage.getItem("pokedex")) || [];
 
@@ -110,11 +157,11 @@ form.addEventListener("submit", async e => {
     pokedex.push({
         numero,
         foto,
-        nome
+        nome,
+        tipos
     })
 
     localStorage.setItem("pokedex", JSON.stringify(pokedex.sort((a, b) => a.nome.localeCompare(b.nome))))
-    restante.textContent = "Foram encontrados " + pokedex.length + " de " + numTotalPokemon;
     renderizarLista()
 })
 
@@ -126,7 +173,7 @@ pesquisa.addEventListener("input", e => {
 
     lista.replaceChildren();
 
-    const pokemons = pokedex.filter(vl => vl.nome.toLocaleLowerCase().includes(texto )|| vl.numero == texto)
+    const pokemons = pokedex.filter(vl => vl.nome.toLocaleLowerCase().includes(texto.toLocaleLowerCase()) || vl.numero == texto)
 
     if (pokemons.length === 0 || texto.length === 0) {
         renderizarLista()
@@ -136,4 +183,5 @@ pesquisa.addEventListener("input", e => {
             lista.appendChild(li)
         }
         renderizarRestante(pokedex.length)
-    }})
+    }
+})

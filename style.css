@@ -117,9 +117,21 @@ main {
     text-transform: capitalize;
 }
 
-.ctn-visualização {
+.ctn-visualizacao {
     background-color: white;
     border-radius: 20px;
     padding: 10px;
     height: 100%;
+    display: none;
+}
+
+.lista-tipos {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px;
 }
