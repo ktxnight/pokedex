@@ -14,7 +14,7 @@
         <!-- PESQUISA -->
         <form id="form-pesquisa">
             <div class="ctn-pesquisa">
-                <input type="text" id="pesquisa" class="inpt-pesquisa" placeholder="pesquise o nome do pokemon"/>
+                <input type="text" id="pesquisa" class="inpt-pesquisa" placeholder="pesquise o nome do pokemon" />
                 <button class="btn-pesquisar">P</button>
             </div>
             <span id="restante"></span>
@@ -26,7 +26,47 @@
         </main>
     </div>
     <!-- VISUALIZAÇÃO -->
-    <div id="informacao" class="ctn-visualizacao"></div>
+    <div id="informacao" class="ctn-visualizacao">
+        <!-- IMAGEM -->
+        <div class="ctn-imagem"></div>
+        <!-- INFOTMAÇÕES -->
+        <div class="card">
+            <div>
+                <p id="pkm-id></p>
+                <p  id=" pkm-nome> </p>
+                <ul id="pkm-tipos"></ul>
+            </div>
+            <div>
+                <label>Habilidades</label>
+                <ul id="pkm-habilidades"></ul>
+            </div>
+            <div class="outras-infos">
+                <div>
+                    <label>Altura</label>
+                    <div id="pkm-altura"></div>
+                </div>
+                <div>
+                    <label>Peso</label>
+                    <div id="pkm-peso"></div>
+                </div>
+                <div>
+                    <label>Fraqueza</label>
+                    <ul id="pkm-fraqueza"></ul>
+                </div>
+                <div>
+                    <label>Base EXP</label>
+                    <div id="pkm-base-exp"></div>
+                </div>
+            </div>
+            <div>
+                <label>Status</label>
+                <ul id="pkm-status"></ul>
+            </div>
+            <div>
+                <label>Evolution</label>
+            </div>
+        </div>
+    </div>
 </body>
 <script src="script.js"></script>
 

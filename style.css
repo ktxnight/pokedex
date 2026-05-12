@@ -90,7 +90,7 @@ main {
     z-index: 1;
 }
 
-.card {
+#lista-pokemon .card {
     width: 200px;
     height: 100px;
     background-color: white;
@@ -118,11 +118,8 @@ main {
 }
 
 .ctn-visualizacao {
-    background-color: white;
-    border-radius: 20px;
-    padding: 10px;
     height: 100%;
-    display: none;
+    /*display: none;*/
 }
 
 .lista-tipos {
@@ -134,4 +131,30 @@ main {
     align-items: center;
     gap: 5px;
     margin-top: 5px;
+}
+
+.ctn-visualizacao .ctn-imagem {
+    border: 1px solid black;
+    margin: 0 40px -60 40px;
+    width: 150x;
+    height: 150x;
+}
+
+.ctn-visualizacao .card {
+    background-color: white;
+    box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    border-radius: 20px;
+    height: calc(100% - 90px);
+}
+
+#pkm-status{
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 5px;
+    flex-wrap: wrap;
+    font-size: small;
+    list-style: none;
+    text-align: center;
+    
 }

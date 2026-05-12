@@ -1,6 +1,5 @@
 let numTotalPokemon = 0;
 
-
 /* ELEMENTOS HTML */
 const lista = document.querySelector("#lista-pokemon");
 const form = document.querySelector("#form-pesquisa");
@@ -13,7 +12,55 @@ function renderizarRestante(length) {
     restante.textContent = "Foram encontrados " + length + " de" + numTotalPokemon + " pokemons!"
 }
 
+async function renderizarInformacoes(numero) {
+    const pokemon = await fetch("https://pokeapi.co/api/v2/pokemon/" + numero)
+    .then(res => res.json())
+    .then(dta => {
+        console.log(dta)
 
+        const elPeso = document.querySelector("#pkm-peso")
+        elPeso.textContent = dta["weight"] + " kg"
+
+        const elAltura = document.querySelector("#pkm-altura")
+        elAltura.textContent = dta["height"] + " cm"
+
+        const elExp = document.querySelector("#pkm-base-exp")
+        elExp.textContent = dta["base_experience"]
+
+        const elStatus = document.querySelector("#pkm-status")
+        elStatus.replaceChildren()
+
+        const atributos = [
+            { key: "hp", value: "HP" },
+            { key: "attack", value: "ATK" },
+            { key: "defene", value: "DEF" },
+            { key: "special-attack", value: "SPA" },
+            { key: "special-defense", value: "SPD" },
+            { key: "speed", value: "SP" }
+        ]
+
+        for(const att of atributos){
+            const status = dta["stats"].find(sta => sta["stat"]["name"] === att.key)
+            
+            if(!status) continue
+
+            const valor = status["base_stat"]
+
+            const li = document.createElement("li")
+            
+            const dvStatus = document.createElement("div")
+            dvStatus.textContent = att.value
+
+            const lbValor = document.createElement("label")
+            lbValor.textContent = valor
+
+            li.appendChild(dvStatus)
+            li.appendChild(lbValor)
+            elStatus.appendChild(li)
+        }
+    })
+    .catch(err => { console.error("Não foi possível recuperar o pokemon " + numero + ": " + err) })
+}
 
 function createPokemonCard(pokemon) {
     const li = document.createElement("li")
@@ -85,8 +132,10 @@ function createPokemonCard(pokemon) {
 
     li.appendChild(card)
     li.addEventListener("click", () => {
-        const display = informacao.style.display || "none"; 
-        informacao.setAttribute("style", "display: ".concat(display === "none" ? "block" : "none"))
+        const display = informacao.style.display || "none";
+        const newDisplay = display === "none" ? "block" : "none"
+        if (newDisplay === "block") renderizarInformacoes(pokemon.numero)
+        informacao.setAttribute("style", "display: ".concat(newDisplay))
 
     })
     return li
@@ -116,8 +165,8 @@ function renderizarLista() {
     renderizarRestante(pokedex.length)
 }
 
-function abrirInfo(){
-    informacao.setAttribute("style", )
+function abrirInfo() {
+    informacao.setAttribute("style",)
 }
 
 fetch("https://pokeapi.co/api/v2/pokemon/")
